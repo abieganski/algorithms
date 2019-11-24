@@ -1,4 +1,54 @@
-inf = float('inf')
+# The Bellman-Ford algorithm
+# Find the shortest paths from the given source node in a weighted directed graph to all other nodes.
+# Is able to handle graphs with negative-weight cycles.
+class BellmanFord:
+
+    inf = float('inf')
+
+    def __init__(self, vertices, edges):
+        self.vertices = vertices
+        self.edges = edges
+
+    def ShortestPaths(self, source):
+
+        # we'll put the distances from the source vertex to all other in this dictionary
+        distances = {}
+
+        # initialize all distances with infinity, except from the source vertex to itself, which is 0
+        for v in vertices:
+            if v == source:
+                distances[v] = 0
+            else:
+                distances[v] = self.inf
+
+        print(distances)
+
+        V = len(self.vertices) # number of vertices in the graph
+
+        # now 'relax' the distances V-1 times
+        for i in range(V-1):
+            print( "iteration ", i )
+            for e in self.edges:
+                u = e['u']
+                v = e['v']
+                w = e['w']
+                
+                if distances[v] > distances[u] + w:
+                    distances[v] = distances[u] + w
+                
+        # now 'relax' the distances one more time - if you get a shorter distance, this means there's a negative weight cycle
+        # i.e. you can shorten at least one of the distances forever by walking the cycle again and again
+        print( "negative-weight cycle detection iteration")
+        for e in self.edges:
+            u = e['u']
+            v = e['v']
+            w = e['w']
+            
+            if (distances[u] != self.inf) and (distances[u] + w < distances[v]):
+                return 'negative cycle detected'
+
+        return distances
+        
 
 # graphs vertices (nodes) -- in reality the number of vertices and the list of all edges is enough
 # but just to be explicit -- let's have the vertices listed here
@@ -20,37 +70,8 @@ edges = [
     { 'u': 'F', 'v': 'D', 'w':  8 }
 ]
 
-# we'll put the distances from the source vertex to all other in this dictionary
-distances = {}
+bellmanFord = BellmanFord(vertices, edges)
 
-print( "start")
-
-source = vertices[0] # let's say 'A' is the source vertex
-
-# initialize all distances with infinity, except from the source vertex to itself, which is 0
-for v in vertices:
-    if v == source:
-        distances[v] = 0
-    else:
-        distances[v] = inf
-
-print(distances)
-
-
-for i in range(len(vertices)-1):
-    print( "iteration ", i )
-    for e in edges:
-        u = e['u']
-        v = e['v']
-        w = e['w']
-        
-        if distances[v] > distances[u] + w:
-            distances[v] = distances[u] + w
-        
-print(distances)
-
-    
-
-
-
+shortestPaths = bellmanFord.ShortestPaths(vertices[0])
+print(shortestPaths)
 
