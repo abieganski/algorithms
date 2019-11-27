@@ -1,6 +1,6 @@
 # The Bellman-Ford algorithm
-# Find the shortest paths from the given source node in a weighted directed graph to all other nodes.
-# Is able to handle graphs with negative-weight cycles.
+# Find the shortest paths from the given source node in a weighted graph to all other nodes.
+# Is able to handle graphs with negative weights. Detects negative-weight cycles.
 class BellmanFord:
 
     inf = float('inf')
